@@ -1,0 +1,133 @@
+body {
+    margin: 0;
+    display: flex;
+    height: 100vh; /* Body fills the entire page */
+    font-family: 'Uncut Sans', sans-serif;
+    background: linear-gradient(to bottom, #F2F2F2, #FFFFFF)
+}
+
+.sidebar {
+    width: 48px;
+    /* background: linear-gradient(to bottom, #FFFFFF, #FAFAFA); */
+    /* background: red; */
+    color: black;
+    overflow: hidden;
+    transition: width 0.3s;
+    position: fixed;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid lightgray; /* Adjust the thickness and color as needed */
+}
+
+.sidebar:hover {
+    width: 200px;
+}
+
+.sidebar:hover .pages li {
+    /* background: #F3F4FC; */
+    width: 176px;
+    margin-left:12px;
+    margin-right:12px;
+}
+
+.sidebarContent {
+    list-style: none;
+    padding: 0;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+    /* background-color: orange; */
+}
+
+.sidebarContent li {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    /* background-color: green; */
+    /* margin-left:6px; */
+}
+
+.logoIcon {
+    margin-bottom: 12px;
+}
+
+.logoIcon li {
+    margin-left:6px;
+}
+
+.logoIcon img {
+    padding-right: 6px;
+    padding-left: 12px;
+}
+
+.pages {
+    /* background: yellow; */
+}
+
+.pages li {
+    width: 36px;
+    height: 36px;
+    transition: width 0.3s, margin-left 0.3s, margin-right 0.3s;
+    margin-left: 6px;
+    margin-right: 6px;
+    margin-top: 6px;
+    border-radius: 4px;
+    /* border-color: purple; */
+    border-width: 2px; /* Reduced border width */
+    box-sizing: border-box; /* Ensures the border is part of the element's total size */
+}
+
+.pages span {
+    margin-left: 9px;
+}
+
+.pages li:hover {
+    background: #e4e4e4;
+
+}
+
+/* Image Icon Styling */
+.sidebarContent li img {
+    width: 24px;
+    height: 24px;
+    padding-left: 6px;
+    /* min-width: 24px; Ensures proper alignment */
+    /* margin-right: 10px; */
+}
+
+.sidebarContent li span {
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 12px;
+    font-weight: 400;
+    color: #808080;
+}
+
+.sidebar:hover .sidebarContent li span {
+    opacity: 1;
+}
+
+#logoText{
+    color: #444EAA;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+hr { 
+    margin-left: 12px;
+    margin-right: 12px;
+}
+
+#selected li {
+    background-color: #F3F4FC;
+    border-radius: 3px;
+    border: 1px solid #DADCEE;
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Platform</title>
+
+    <!-- "Uncut sans" font -->
+    <link href="https://fonts.googleapis.com/css2?family=Uncut+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="sidebar.css">
+    <style>
+
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <ul class="sidebarContent">
+            <div>
+                <div class="logoIcon">
+                    <li id="logo" data-page="home"><img src="img/logo.png" alt="Home"> <span id="logoText">Tally</span></li>
+                </div>
+                <div class="pages">
+                    <li id="materials" data-page="materials"><img src="icons/Components-Inactive.svg" alt="Files"> <span>Materials</span></li>
+                    <li id="products" data-page="products"><img src="icons/Products-Inactive.svg" alt="Settings"> <span>Products</span></li>
+                    <li id="fulfillment" data-page="fulfillment"><img src="icons/Orders-Inactive.svg" alt="Messages"> <span>Fulfillment</span></li>
+                    <hr>
+                    <li id="integrations" data-page="integrations"><img src="icons/Integrations-Inactive.svg" alt="Messages"> <span>Integrations</span></li>
+                </div>
+            </div>
+            <div>
+                <div class="pages">
+                    <li id="logout" data-page="logout"><img src="icons/logoutIcon.svg" alt="Logout"> <span>Log out</span></li>
+                    <li id="profile" data-page="profile"><img src="img/profile.png" alt="Profile"> <span>Profile</span></li>
+                </div>
+            </div>
+        </ul>
+        
+    </div>
+</body>
+</html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    // Select all li elements
+    const liElements = document.querySelectorAll('li[data-page]');
+    
+    // Iterate through each li and add a click event listener
+    liElements.forEach(function (li) {
+        li.addEventListener('click', function () {
+            const page = li.getAttribute('data-page');
+            // Redirect to the associated page
+            window.location.href = `${page}.html`;
+        });
+    });
+});
+</script>

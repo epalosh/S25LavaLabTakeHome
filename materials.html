@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materials</title>
+
+    <!-- "Uncut sans" font -->
+    <link href="https://fonts.googleapis.com/css2?family=Uncut+Sans:wght@400;700&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="materials.css">
+    <style>
+
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <ul class="sidebarContent">
+            <div>
+                <div class="logoIcon">
+                    <li id="logo" data-page="home"><img src="img/logo.png" alt="Home"> <span id="logoText">Tally</span></li>
+                </div>
+                <div class="pages">
+                    <div id="selected">
+                        <li id="materials" data-page="materials"><img src="icons/Components-Inactive.svg" alt="Files"> <span>Materials</span></li>
+                    </div>
+                    <li id="products" data-page="products"><img src="icons/Products-Inactive.svg" alt="Settings"> <span>Products</span></li>
+                    <li id="fulfillment" data-page="fulfillment"><img src="icons/Orders-Inactive.svg" alt="Messages"> <span>Fulfillment</span></li>
+                    <hr>
+                    <li id="integrations" data-page="integrations"><img src="icons/Integrations-Inactive.svg" alt="Messages"> <span>Integrations</span></li>
+                </div>
+            </div>
+            <div>
+                <div class="pages">
+                    <li id="logout" data-page="logout"><img src="icons/logoutIcon.svg" alt="Logout"> <span>Log out</span></li>
+                    <li id="profile" data-page="profile"><img src="img/profile.png" alt="Profile"> <span>Profile</span></li>
+                </div>
+            </div>
+        </ul> 
+    </div>
+
+    <div class="frame">
+        <div class="header">
+            <div class="header-left">
+                <span class="materials-text">Materials</span>
+                <span class="blanks-text">/ Blanks</span>
+            </div>
+    
+            <!-- Toggle Container -->
+            <div class="toggle-container">
+                <button class="toggle-button active" id="inventoryToggle">Inventory</button>
+                <button class="toggle-button" id="orderQueueToggle">Order Queue</button>
+            </div>
+        </div>
+    
+        <div class="inventory">
+            <!-- Search Bar -->
+            <div class="sortFilter">
+                <div class="intermediate">
+                    <input type="text" id="searchBar" placeholder="Search Materials" class="search-bar">
+
+                    <!-- Sorting Options -->
+                    <div class="sort-container">
+                        <label for="sortBy" style="display:none;">Sort by:</label>
+                        <div class="sort-dropdown" id="sortDropdown">
+                            <img src="icons/filter.svg" alt="Sort Options" class="sort-image" />
+                            <img src="icons/orderArrows.svg" alt="Sort Options" class="sort-image" />
+                        </div>
+
+                        <div class="dropdown-options" id="dropdownOptions">
+                            <button class="dropdown-option" data-value="name">Name</button>
+                            <button class="dropdown-option" data-value="quantity">Quantity</button>
+                        </div>
+                    </div>
+                </div>
+                <button id="addItemButton">+ Add New</button>
+
+                <!-- Popup Modal -->
+                <div id="addItemModal" class="modal">
+                    <div class="modal-content">
+                        <span id="closeModal" class="close">&times;</span>
+                        <h2>Add New Item</h2>
+                        <form id="addItemForm">
+                            <label for="itemName">Item Name</label>
+                            <input type="text" id="itemName" required>
+
+                            <label for="itemQuantity">Quantity</label>
+                            <input type="number" id="itemQuantity" required>
+
+                            <label for="itemPrice">Price</label>
+                            <input type="number" step="0.01" id="itemPrice" required>
+
+                            <label for="itemImageId">Image ID</label>
+                            <input type="text" id="itemImageId" required>
+
+                            <button type="submit">Add Item</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Inventory List -->
+            <div id="inventoryList" class="inventory-list">
+                <!-- List items will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        // Select all li elements
+        const liElements = document.querySelectorAll('li[data-page]');
+        
+        // Iterate through each li and add a click event listener
+        liElements.forEach(function (li) {
+            li.addEventListener('click', function () {
+                const page = li.getAttribute('data-page');
+                // Redirect to the associated page
+                window.location.href = `${page}.html`;
+            });
+        });
+
+        // Toggle buttons functionality
+        const inventoryToggle = document.getElementById('inventoryToggle');
+        const orderQueueToggle = document.getElementById('orderQueueToggle');
+
+        inventoryToggle.addEventListener('click', function () {
+            inventoryToggle.classList.add('active');
+            orderQueueToggle.classList.remove('active');
+            // Perform any other action related to Inventory selection
+        });
+
+        orderQueueToggle.addEventListener('click', function () {
+            orderQueueToggle.classList.add('active');
+            inventoryToggle.classList.remove('active');
+            // Perform any other action related to Order Queue selection
+        });
+    });
+
+    // Sort dropdown logic
+    document.addEventListener('DOMContentLoaded', function () {
+        const sortDropdown = document.getElementById('sortDropdown');
+        const dropdownOptions = document.getElementById('dropdownOptions');
+        
+        // Toggle the dropdown options when the image is clicked
+        sortDropdown.addEventListener('click', function () {
+            dropdownOptions.style.display = dropdownOptions.style.display === 'block' ? 'none' : 'block';
+        });
+        
+        // Handle the selection of a sort option
+        const dropdownOptionButtons = document.querySelectorAll('.dropdown-option');
+        dropdownOptionButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const sortBy = button.getAttribute('data-value');
+                // Call sortItems to sort by selected criteria
+                sortItems(sortBy);
+                dropdownOptions.style.display = 'none'; // Hide options after selection
+            });
+        });
+    });
+
+    // Sample inventory data
+    const inventory = [
+        { name: 'Gildan T-Shirt - Red / M', quantity: 10, price: 5.00, imageId: 'g_r' },
+        { name: 'Gildan T-Shirt - Red / L', quantity: 5, price: 10.00, imageId: 'g_r' },
+        { name: 'Gildan T-Shirt - Black / S', quantity: 10, price: 5.00, imageId: 'g_b' },
+        { name: 'Gildan T-Shirt - Black / M', quantity: 5, price: 10.00, imageId: 'g_b' },
+        { name: 'Gildan T-Shirt - Black / L', quantity: 10, price: 5.00, imageId: 'g_b' },
+        { name: 'Gildan T-Shirt - White / S', quantity: 5, price: 10.00, imageId: 'g_w' },
+        { name: 'Gildan T-Shirt - White / M', quantity: 10, price: 5.00, imageId: 'g_w' },
+        { name: 'Gildan T-Shirt - White / L', quantity: 5, price: 10.00, imageId: 'g_w' },
+    
+    ];
+
+    function displayInventory(items) {
+        const inventoryList = document.getElementById('inventoryList');
+        inventoryList.innerHTML = '';
+
+        items.forEach(item => {
+            const itemElement = document.createElement('div');
+            itemElement.classList.add('inventory-item');
+
+            // Create a container for the image with 48x48px size
+            const imageContainer = document.createElement('div');
+            imageContainer.style.width = '48px';
+            imageContainer.style.height = '48px';
+            imageContainer.style.border = '1px solid #ddd'; // Optional: Add a border around the image
+            imageContainer.style.borderRadius = '8px'; // Optional: Rounded corners for the box
+            imageContainer.style.overflow = 'hidden'; // Ensure the image doesn't overflow the container
+            imageContainer.style.display = 'flex'; // Enable Flexbox
+            imageContainer.style.justifyContent = 'center'; // Horizontally center the image
+            imageContainer.style.alignItems = 'center'; // Vertically center the image
+            imageContainer.style.marginRight = '10px'; // Add 10px right margin
+
+            // Create image element using imageId
+            const imgElement = document.createElement('img');
+            imgElement.src = `img/${item.imageId}.png`;
+            imgElement.alt = item.name;
+            imgElement.style.width = '34px';  // Ensure the image fills the container
+            imgElement.style.height = '34px'; // Ensure the image fills the container
+
+            // Append the image to the container
+            imageContainer.appendChild(imgElement);
+
+
+            // Create text container
+            const textContainer = document.createElement('div');
+            textContainer.classList.add('text-container');
+
+            // Name text
+            const nameText = document.createElement('span');
+            nameText.classList.add('name');
+            nameText.textContent = item.name;
+
+            textContainer.appendChild(nameText);
+
+            // Create the quantity wrapper
+            const quantityWrapper = document.createElement('div');
+            quantityWrapper.style.backgroundColor = 'white';
+            quantityWrapper.style.borderRadius = '8px';
+            quantityWrapper.style.display = 'flex';
+            quantityWrapper.style.alignItems = 'center';
+
+            // Create the quantity container
+            const quantityContainer = document.createElement('div');
+            quantityContainer.classList.add('quantity-container');
+            quantityContainer.style.position = 'relative'; // To position quantity label
+
+            // Decrement button
+            const decrementButton = document.createElement('button');
+            decrementButton.classList.add('quantity-button');
+            decrementButton.textContent = '-';
+            decrementButton.style.borderRight = '1px solid #D4D4D4';
+
+            // Quantity display wrapper
+            const quantityWrapperDiv = document.createElement('div');
+            quantityWrapperDiv.style.position = 'relative';
+            quantityWrapperDiv.style.width = '100px'; // Match quantity display width
+            quantityWrapperDiv.style.height = '48px'; // Match quantity display width
+            quantityWrapperDiv.style.display = 'flex';
+            quantityWrapperDiv.style.justifyContent = 'center'; // Centers horizontally
+            quantityWrapperDiv.style.alignItems = 'center';     // Centers vertically
+
+            // Display current quantity
+            const quantityDisplay = document.createElement('span');
+            quantityDisplay.classList.add('quantity-display');
+            quantityDisplay.textContent = item.quantity;
+            quantityDisplay.style.position = 'absolute';
+            quantityDisplay.style.top = '7%';  // Position it at the top
+            quantityDisplay.style.left = '0';  // Align it to the left of the container
+
+            // Create quantity label
+            const quantityLabel = document.createElement('div');
+            quantityLabel.classList.add('quantity-label');
+            quantityLabel.textContent = `${item.quantity} PCS`;
+            quantityLabel.style.backgroundColor = '#F2F2F2';
+            quantityLabel.style.color = '#000';
+            quantityLabel.style.fontSize = '12px';
+            quantityLabel.style.position = 'absolute';
+            quantityLabel.style.textAlign = 'center';
+            quantityLabel.style.width = '100%';
+            quantityLabel.style.bottom = '0';  // Position it at the bottom
+            quantityLabel.style.left = '0';  // Align it to the left of the container
+            quantityLabel.style.borderTop = '1px solid #D4D4D4';  // Add 1px light gray border
+
+            // Append quantity display and label inside wrapper
+            quantityWrapperDiv.appendChild(quantityDisplay);
+            quantityWrapperDiv.appendChild(quantityLabel);
+
+            // Increment button
+            const incrementButton = document.createElement('button');
+            incrementButton.classList.add('quantity-button');
+            incrementButton.textContent = '+';
+            incrementButton.style.borderLeft = '1px solid #D4D4D4';
+
+            // Append buttons and quantity display to the container
+            quantityContainer.appendChild(decrementButton);
+            quantityContainer.appendChild(quantityWrapperDiv);
+            quantityContainer.appendChild(incrementButton);
+
+            // Append quantity container to wrapper
+            quantityWrapper.appendChild(quantityContainer);
+
+            // Update label when quantity changes
+            decrementButton.addEventListener('click', () => {
+                if (item.quantity > 0) {
+                    item.quantity--;
+                    quantityDisplay.textContent = item.quantity;
+                    quantityLabel.textContent = `${item.quantity} PCS`;
+                }
+            });
+
+            incrementButton.addEventListener('click', () => {
+                item.quantity++;
+                quantityDisplay.textContent = item.quantity;
+                quantityLabel.textContent = `${item.quantity} PCS`;
+            });
+
+            // Append the image container, text container, and quantity wrapper to the item element
+            itemElement.appendChild(imageContainer);
+            itemElement.appendChild(textContainer);
+            itemElement.appendChild(quantityWrapper);
+
+            // Append the item to the inventory list
+            inventoryList.appendChild(itemElement);
+        });
+    }
+
+
+
+    // Function to handle search
+    document.getElementById('searchBar').addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const filteredItems = inventory.filter(item => item.name.toLowerCase().includes(searchTerm));
+        displayInventory(filteredItems);
+    });
+
+    // Function to sort the items based on selected criterion
+    function sortItems(criterion) {
+        let sortedItems = [...inventory]; // Create a copy of the inventory array
+
+        if (criterion === 'name') {
+            sortedItems.sort((a, b) => a.name.localeCompare(b.name));
+        } else if (criterion === 'quantity') {
+            sortedItems.sort((a, b) => a.quantity - b.quantity);
+        } else if (criterion === 'price') {
+            sortedItems.sort((a, b) => a.price - b.price);
+        }
+
+        displayInventory(sortedItems);
+    }
+
+    // Initial display of all items
+    displayInventory(inventory);
+
+    // Add Item Button and Modal Logic
+    const addItemButton = document.getElementById('addItemButton');
+    const addItemModal = document.getElementById('addItemModal');
+    const closeModal = document.getElementById('closeModal');
+    const addItemForm = document.getElementById('addItemForm');
+
+    addItemButton.addEventListener('click', function () {
+        addItemModal.style.display = 'block'; // Show the modal when the button is clicked
+    });
+
+    closeModal.addEventListener('click', function () {
+        addItemModal.style.display = 'none'; // Hide the modal when close button is clicked
+    });
+
+    window.addEventListener('click', function (event) {
+        if (event.target === addItemModal) {
+            addItemModal.style.display = 'none'; // Close modal when clicked outside
+        }
+    });
+
+    addItemForm.addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent page reload
+
+        // Get input values
+        const name = document.getElementById('itemName').value;
+        const quantity = parseInt(document.getElementById('itemQuantity').value);
+        const price = parseFloat(document.getElementById('itemPrice').value);
+        const imageId = document.getElementById('itemImageId').value;
+
+        // Add new item to the inventory array
+        const newItem = {
+            name: name,
+            quantity: quantity,
+            price: price,
+            imageId: imageId
+        };
+
+        inventory.push(newItem); // Add the new item
+        displayInventory(inventory); // Refresh the inventory display
+
+        addItemModal.style.display = 'none'; // Hide the modal after submission
+
+        // Reset form
+        addItemForm.reset();
+    });
+    </script>
+</body>
+</html>

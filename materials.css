@@ -1,0 +1,319 @@
+.frame {
+            height: 683px;
+            /* background-color: red;  */
+            position: absolute; /* Positioning relative to the screen */
+            top: 36px; /* 36px from the top */
+            left: calc(48px + 136px); /* 48px from the left edge of the screen + 136px from the sidebar */
+            right: 136px; /* 136px from the right edge */
+            width: calc(100% - 320px);
+            transition: left 0.3s ease, width 0.3s ease; /* Smooth transitions for left position and width */
+        }
+
+        /* Adjust the width and position of the .frame when the sidebar is hovered */
+        .sidebar:hover + .frame {
+            left: calc(200px + 136px); /* If sidebar is hovered, add 200px instead of 48px */
+            width: calc(100% - 472px); /* Adjust the width when the sidebar expands (200px for the sidebar + 136px for left padding + 136px for right padding) */
+        }
+
+        .header {
+            width: 100%;  /* Span the whole width */
+            height: 41px; /* Set height to 41px */
+            /* background-color: orange; */
+            position: absolute; /* Positioning within the frame */
+            top: 0; /* Position at the top of the frame */
+            left: 0; /* Align to the left */
+            display: flex; /* Using flexbox to align elements */
+            justify-content: space-between; /* Space between items */
+            align-items: center; /* Center align vertically */
+            padding: 0 16px; /* Space on both sides */
+            box-sizing: border-box; /* Ensure padding is included in the width */
+        }
+
+        /* Header content in the center */
+        .header .center-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1; /* Allow the header content to grow and take center space */
+        }
+
+        /* Text styles */
+        .header .materials-text {
+            font-size: 24px;
+            color: #1A1A1A; /* Dark grey for "Materials" */
+        }
+
+        .header .blanks-text {
+            font-size: 24px;
+            color: #AAAAAA; /* Light grey for "/ Blanks" */
+            margin-left: 8px; /* Space between the two texts */
+        }
+
+       /* Container for the toggle, styled as a rectangle with two subrectangles */
+        .toggle-container {
+            display: flex;
+            width: 204px;  /* Set the total width of the toggle container */
+            height: 40px;  /* Set the height of the toggle */
+            border: 1px solid #E6E6E6;  /* Border for the entire toggle container */
+            border-radius: 8px;  /* Rounded corners for the container */
+            overflow: hidden;  /* Hide content outside the container */
+            background-color: #E6E6E6;  /* Set a default background color */
+            position: relative;
+            justify-content: center;  /* Center the buttons horizontally */
+            align-items: center;  /* Center the buttons vertically */
+        }
+
+        /* Style for each toggle button inside the container */
+        .toggle-button {
+            width: 96px;  /* Set the width of each button */
+            height: 33px;  /* Set the height of each button */
+            background-color: #E6E6E6;  /* Default background color */
+            border: none;  /* Remove borders */
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;  /* Smooth transition for background color */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* When a button is active (selected), change its background */
+        .toggle-button.active {
+            background-color: #FFFFFF;  /* Set selected background color */
+            border: 1px solid #D4D4D4;
+            color: #333333;  /* Change text color to white */
+        }
+
+        /* Optional: Style the text when inactive */
+        .toggle-button:not(.active) {
+            color: #808080;  /* Text color when inactive */
+        }
+
+
+        .inventory {
+            position: absolute;
+            top: 53px;
+            left: 0;
+            border-radius: 8px;
+            width: 100%;  /* Full width of the frame */
+            background: #FFFFFF;
+            max-height: calc(100vh - 53px); /* Optional: Add a max-height to avoid overflowing vertically */
+            overflow-y: auto; /* Allow scrolling if content exceeds max-height */
+            padding-bottom: 12px;
+        }
+
+        .sortFilter {
+            height: 54px;
+            /* background-color: green; */
+            display: flex;
+            align-items: center; /* Vertically centers the content */
+            justify-content: space-between; /* Distribute space between elements */
+        }
+
+        .search-bar {
+            padding: 10px;
+            width: 360px;
+            height: 36px;
+            margin-left: 12px;
+            border-radius: 8px;
+            box-sizing: border-box;
+            border: 1px solid #D3D3D3; /* Light grey border */
+        }
+
+        .sort-container {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .sort-dropdown {
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Center the icon vertically */
+            height: 100%; /* Ensure it fills the container vertically */
+        }
+
+        .sort-image {
+            width: 24px; /* Adjust the size of the image */
+            height: 24px;
+            margin-top: 20px;
+            margin-left: 4px;
+        }
+
+        .dropdown-options {
+            display: none;
+            position: absolute;
+            border-radius: 8px;
+            background-color: white;
+            
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .dropdown-option {
+            padding: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            background-color: white;
+            text-align: left;
+        }
+
+        .dropdown-option:hover {
+            background-color: #f0f0f0;
+        }
+    
+        .inventory-list {
+            list-style: none;
+            padding: 0;
+            width: calc(100% - 24px);  /* Adjust width dynamically */
+
+            margin-left: 12px;
+            /* background-color: blue; */
+        }
+    
+        /* Keep the same styles for inventory-item */
+    .inventory-item {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        display: flex;
+        align-items: center; /* Center vertically */
+        height: 48px;
+        justify-content: space-between; /* Space between image and right-side buttons */
+    }
+
+    .inventory-item img {
+        width: 34px;
+        height: 34px;
+    }
+
+    .inventory-item .text-container {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;  /* Allow the text container to grow */
+    }
+
+    .inventory-item .text-container .name {
+        font-size: 12px;
+        color: #000; /* Black text */
+    }
+
+    .quantity-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 196px; /* Set width to keep buttons and text consistent */
+        height: 48px;
+        border: 1px solid #D4D4D4;
+    }
+
+    .quantity-button {
+        width: 48px;
+        height: 48px;
+        background-color: #FFFFFF;
+        border: 1px solid #FFFFFF;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .quantity-display {
+        font-family: 'Chivo Mono', monospace;
+        width: 30px; /* Fixed width for the quantity display */
+        text-align: center;
+        font-size: 24px;
+        width: 100px;
+    }
+
+    .quantity-label {
+        background-color: #F2F2F2; /* Light grey */
+        color: #000; /* Black text */
+        font-size: 12px;
+        text-align: center;
+        width: 100px; /* Ensure it spans the width of the container */
+        position: absolute;
+        bottom: -30px; /* Move it slightly below the container */
+        left: 0;
+    }
+
+    /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form label {
+            margin-top: 10px;
+        }
+
+        form input {
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+
+        form button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #45a049;
+        }
+
+        #addItemButton{
+            background: #444EAA;
+            color: white;
+            width: 108px;
+            height: 36px;
+            border-radius: 4px;
+            border: none;
+            margin-right:12px;
+        }
+
+        .intermediate{
+            display: flex;
+            height: 36px;
+        }
